@@ -29,6 +29,9 @@ of local key disclosure this project relies on.
 
 ## What's here
 
+- [ARCHITECTURE.md](ARCHITECTURE.md) — the device's key material, what each
+  key gates, and the two ways an owner recovers their own keys to reflash.
+  The "why it works" behind the how-to docs.
 - [HARDWARE.md](HARDWARE.md) — module pinout, flash partition map, this
   board's confirmed pin roles.
 - [FLASHING.md](FLASHING.md) — dumping stock firmware and flashing OpenBeken
