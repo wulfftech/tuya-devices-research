@@ -10,6 +10,8 @@ and live on real units — see [REFERENCES.md](REFERENCES.md) for the sources.
 2 MiB flash, no flash encryption, 288 KB RAM (datasheet) / 256 KiB (LibreTiny
 — the two sources disagree and neither write-up here picks a winner).
 
+![The T1-2S-NL module as it sits on the board](images/module-t1-2s-nl.jpg)
+
 Castellated edge pads, no headers:
 
 ```
@@ -31,6 +33,8 @@ route it anywhere reachable.
 RX/TX are crossed against a plain USB-serial adapter: the adapter's TX drives
 the module's `RX1`. A dev-board-as-bridge would be straight-through instead,
 because its silkscreen names the chip's own pins, not the adapter's.
+
+![Edge pads, close up](images/module-pads.jpg)
 
 ## Flash partition map
 
@@ -62,6 +66,8 @@ firmware's own string table are a format-string schema (`"rl1_pin: %d"`),
 not the values.
 
 ## This board's pin roles (Series 4, confirmed live)
+
+![Annotated edge pads: 3V3/GND/RX1/TX1/P9/P24, the TX2 log-UART test point, and the antenna keep-clear zone](images/module-pinout-annotated.jpg)
 
 | Pin | OpenBeken role | Channel | Note |
 |---|---|---|---|

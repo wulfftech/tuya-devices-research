@@ -10,6 +10,8 @@ connect anything — this board's power stage is not isolated from mains.
 off the mains section through a non-isolated buck converter — there's no
 transformer. Everything referenced to that ground is live relative to earth.
 
+![The board's power section, annotated: mains input top right (keep dead), the AMS1117 LDO that derives the module's 3.3V from the board's own 5V rail, and the two relay coils this rail also drives](images/board-power-annotated.jpg)
+
 That matters the instant a USB-serial adapter's GND touches the module's
 GND: the adapter is grounded through your USB host, and the host is grounded
 through its own mains lead. Two earth-referenced points meeting a
@@ -45,6 +47,15 @@ TX/RX are crossed: the adapter's TX drives the module's `RX1`. Don't power
 the module from the adapter's 3.3 V pin — if you see a clean boot banner that
 truncates at the same point and repeats on a fixed period, that's brownout,
 not a wiring fault.
+
+**Alternative: power the whole board, not just the bare module.** If you want
+the relay to audibly click or the BL0942 to read during bring-up — not just a
+bare-module serial session — inject 5 V at the AMS1117 LDO's input pin
+instead of 3.3 V at the module's pads. The LDO then supplies the module the
+same way the board's own (disconnected) mains supply would, and the relay
+coils, which run off the 5 V rail directly, come alive too.
+
+![AMS1117 LDO close-up: GND and 3.3V-out pins labelled, 5V-in pin marked as the injection point](images/ldo-injection-annotated.jpg)
 
 ### Reset: no CEN pad on this product, so toggle power instead
 

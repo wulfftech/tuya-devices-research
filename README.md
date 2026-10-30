@@ -11,6 +11,8 @@ Tuya's own OTA path would.
 anything.** This board's power stage is not isolated from mains. Get that
 wrong and you can damage more than the plug.
 
+![The board with the T1-2S-NL module removed: both relays, the BL0942 metering section, and the non-isolated power stage](images/board-overall.jpg)
+
 ## Hardware
 
 | | |
@@ -34,6 +36,7 @@ of local key disclosure this project relies on.
 - [PROVISIONING.md](PROVISIONING.md) — getting from "OpenBeken boots" to
   "relay, button, LED and metering all configured and verified."
 - `tools/` — the scripts referenced from the docs above.
+- `images/` — board and module photos referenced from the docs above.
 
 ## Scope
 
