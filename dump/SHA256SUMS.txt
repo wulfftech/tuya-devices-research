@@ -1,0 +1,7 @@
+2f0fe19f1ca3d9da2687671f36ac4b33bdc7b9f98763abae6ba7b03dea97f96f *dump/stock-full-2MiB.bin
+0f873d97e24ef79388a195a3ae0ca652bdf07053f95e42715a80347d8c085dad *dump/stock-full-2MiB.logical.bin
+6ec5bf4de71061c728ad83ffeb93570d6ab94626b0b5b7b6165335cf6e0f7127 *dump/unit2-postopenbeken-2MiB.bin
+bd13ab0bd3fbc4ec3d4726aca19a13d76cbb46131c61fdec288cae488f04d7a5 *dump/unit7-postopenbeken-2MiB.bin
+643f203af16319e0f0707f598c10dee12c8c2a047b46854d767832264027d556 *dump/stock-full-2MiB.arm.elf
+ef39fe9c4a0128d25c72c948261e4e0a0ce57710ea5604ee0fd2d450c7188be0 *served-images/RCZL-unit3-noop-fixed.bin
+b7f9bce371ba3dcc8da1bf6f0cd2c4d311f183fb6c754f3ef0537708bedad561 *served-images/RCZL.bin

@@ -37,6 +37,10 @@ of local key disclosure this project relies on.
   "relay, button, LED and metering all configured and verified."
 - `tools/` — the scripts referenced from the docs above.
 - `images/` — board and module photos referenced from the docs above.
+- [`dump/`](dump/README.md) — full flash reads: stock, post-OpenBeken, and the
+  app partition pre-extracted for a disassembler.
+- [`served-images/`](served-images/README.md) — the actual OTA images pushed
+  to real hardware to install OpenBeken.
 
 ## Scope
 
@@ -47,5 +51,4 @@ different Tuya module without checking.
 
 ## License
 
-Not yet chosen. Don't build on this commercially until that's settled — ask
-first.
+[CC BY-NC 4.0](LICENSE) — attribution required, no commercial use.
