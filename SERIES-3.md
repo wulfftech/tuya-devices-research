@@ -12,6 +12,21 @@ that works on the Series 4 does not exist on this product.
 This page exists so the two products are not confused. They share a part
 number and nothing else that matters.
 
+## What the firmware analysis was actually done on
+
+The image behind every firmware claim below is **not** a Series 3 dump. It is
+`pc191ha2_flash.dmp`, a **Series 2** unit published in cloudcutter issue #691
+(2024-07-19), firmware `1.1.17`, module CB2S. The Series 3 unit here reports the
+same firmware version and the same productKey, and a commenter in that same
+issue reports a Series 3 at `1.1.17` too — but this project never dumped its own
+Series 3, so no Series 3 image has been examined.
+
+That makes the firmware claims below a **firmware-identity** result, not a
+direct measurement of a Series 3. It is a strong inference: same productKey,
+same module, same firmware version string. It is not the same thing as having
+looked. No `1.1.8` image has been examined at all, so nothing here says anything
+about Series 2 units still on the older build.
+
 ## It is a different product, not a Series 4 with a different chip
 
 | | Series 3 | Series 4 |
@@ -38,15 +53,15 @@ receiver is the one that cannot be worked around.
   the `LAN_OTA_BEGIN` JSON parser (`otaFileLen`, `fileHmac`, `isDiffOta`,
   `subdevID`, `otaVersion`), the `Rev lan ota start` / `ota data index` /
   `ota data proc` / `lan reset` handlers, and the `LAN_OTA_SEND` payload
-  format. The Series 3 image carries **none** of it. Its `otaChannel` strings
+  format. The `1.1.17` image carries **none** of it. Its `otaChannel` strings
   are all device→cloud reporting. The one message both images share,
   `unsupport frame type:%d`, is the generic LAN dispatcher rejecting an
   unknown frame — shared infrastructure, not an OTA handler.
-- **No `secKey`.** It is structurally absent from the Series 3's cloud device
-  record — not redacted, not empty, the field is not there. A unit whose stock
-  firmware predates that issuance never received one. `secKey` is what signs
-  the OTA file digest, so even with a receiver there would be nothing to
-  satisfy the completion check with.
+- **No `secKey`.** It is absent from the Series 3's cloud record — not redacted,
+  not empty, the field is not there. A unit whose firmware predates that
+  provisioning step never received one. `secKey` is what signs the OTA file
+  digest, so even with a receiver there would be nothing to satisfy the
+  completion check with.
 
   Note what this does *not* mean: the LAN handshake needs only `localKey`, so
   a `secKey`-less unit is still reachable and fully readable over the LAN. Only
@@ -62,7 +77,7 @@ sees in the local-device list; it is not a per-product permission.
 | Avenue | Result |
 |---|---|
 | LAN `55aa` command plane, swept exhaustively 0–255 | Only `{9, 10, 16}` answer. `{7, 12, 13, 15, 18, 64}` reach live handlers that reject every tested body. Nothing on this plane writes firmware. |
-| The app's own LAN OTA (`DirectlyConnectDeviceOtaTask`) | Real, and it drives the `6699` envelope's `0x1A`/`0x1B`/`0x1C` — the same transfer the Series 4 route already uses. The Series 3 firmware has no receiver for it. |
+| The app's own LAN OTA (`DirectlyConnectDeviceOtaTask`) | Real, and it drives the `6699` envelope's `0x1A`/`0x1B`/`0x1C` — the same transfer the Series 4 route already uses. The `1.1.17` firmware has no receiver for it. |
 | Cloud impersonation (stand-in endpoint) | Closed. Certificate verification is dead code on this build, but the descriptor channel is an `auth_key`-sealed MQTT session, and `auth_key` is factory-burned. |
 | `auth_key` recovery from the app or the cloud | Not possible. The app relays an encrypted blob and never holds the key; the device decrypts it with a factory key. |
 | Bootloader receive interface (UART, SD, button, console) | None. No receive path, no interactive shell, no magic-word recovery. |
@@ -83,14 +98,15 @@ is also not a result, and nothing here claims it works.
 
 ## Evidence level
 
-Everything above is static analysis and emulation (E1–E2). No claim on this
-page is wire-observed or end-to-end. The gate has never been observed acting.
-That is the honest state of it, and it is why the status is "closed" rather
-than "proven impossible".
+Everything above is static analysis and emulation (E1–E2), run on a Series 2
+image at the same firmware version. No claim on this page is wire-observed or
+end-to-end, and the gate has never been observed acting. That is the honest
+state of it, and it is why the status is "closed" rather than "proven
+impossible".
 
 ## What this page deliberately does not contain
 
-The Series 3 work produced a valid package format for its bootloader and the
+The `1.1.17` work produced a valid package format for its bootloader and the
 constant that bootloader decrypts with. Neither is published here. A packer
 plus a known constant is a working exploit kit for a device class that is still
 in the field, and this project's position is that an owner reflash on owned

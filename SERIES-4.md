@@ -52,7 +52,7 @@ why it works: [ARCHITECTURE.md](ARCHITECTURE.md).
 | The OTA-start gate accepts an owner-supplied container | Live; the container's `bin_type` must be one of four accepted words (`ISBA`/`8RBA`/`QCZL`/`RCZL`) |
 | The chunk transfer runs to completion | Live; full transfers of both a no-op and a real OpenBeken container |
 | The completion check is satisfiable by computing it | Live, device-confirmed: `fileHmac = HMAC-SHA256(secKey, uppercase-hex(SHA256(served file)))` |
-| The result boots and is usable | Live: relay, button, relay-indicator LED and BL0942 metering all come up and survive a literal mains power-cycle |
+| The result boots and is usable | Live: relay, relay indicator, and BL0942 metering all come up and survive a real power cycle |
 | It reproduces | **Three separate units** reflashed with no case opened — two to OpenBeken, one from stock to ESPHome with the whole transfer captured on the wire |
 
 The `secKey` that signs the completion check is the one input the Tuya OpenAPI
