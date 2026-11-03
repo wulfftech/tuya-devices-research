@@ -10,11 +10,14 @@ Nothing here has been submitted yet. Each item says where it actually stands.
 ### 1. AP fallback when Wi-Fi never connects
 
 Two branches, two PRs: `wifi-never-connected-ap-fallback` and
-`ap-mode-plain-led-blink`. **Reviewed and ready, not yet submitted.**
+`ap-mode-plain-led-blink`. **Reviewed and ready, not yet submitted.** Both
+build; the never-connected fallback and the LED blink have run on hardware, the
+two fixes made in review have not yet.
 
 OpenBeken retries a configured SSID forever when the join fails. That is not a
 boot failure, so the safe-mode boot counter never trips, and the device becomes
-unreachable with no way back in short of a factory reset. The failure is easy to
+unreachable with no way back in without physical access: a run of quick power
+cycles to force safe mode, or a reflash. The failure is easy to
 hit: a stored credential that is wrong, or an access point that is present but
 refusing the join.
 
@@ -38,7 +41,7 @@ value that has not changed. The restore drives the pin directly.
 One related change is easy to miss. A second countdown in `Main_OnEverySecond`
 calls `Main_ConnectToWiFiNow()`, which clears AP mode unconditionally, so it
 would pull the radio back into STA within seconds of the fallback opening. The
-branch guards that call with `!g_bOpenAccessPointMode`. Without the guard the
+fallback branch guards that call with `!g_bOpenAccessPointMode`. Without the guard the
 watchdog fires and is then silently undone.
 
 ### 2. `ENABLE_DRIVER_BL0942` is undefined under the default variant
