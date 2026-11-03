@@ -7,10 +7,10 @@ works" behind [FLASHING.md](FLASHING.md) and [PROVISIONING.md](PROVISIONING.md).
 **This page describes the Series 4 (BK7238).** The key model is the same
 generation, but the Series 3's cloud record has no `secKey` at all and its
 firmware has no LAN OTA receiver, so the chain below does not close on that
-product — see [SERIES-3.md](SERIES-3.md).
+product. See [SERIES-3.md](SERIES-3.md).
 
 Framing, up front: this is an owner operating on their own hardware with their
-own cloud-issued keys. There's no signature check being broken — the BK7238
+own cloud-issued keys. There's no signature check being broken: the BK7238
 bootloader has none. The local-key disclosure the reflash leans on is already
 public prior art for this chip family (see
 [REFERENCES.md](REFERENCES.md#4-dumbermoretuya--cve-2026-30613)).
@@ -43,17 +43,17 @@ flowchart TB
 
 | Credential | Where | Provenance | Used for | Owner-readable without opening the case |
 |---|---|---|---|---|
-| `psk30_key` | `gw_bi`, 44 B | Factory-burned | The cloud TLS-PSK, passed verbatim to the `:443`/`:8883` connections | No — flash dump only |
-| `auth_key` | `gw_info+0x77`, 32 B | Factory-burned | Inner-cipher/sign key for exactly one call: the activation bootstrap | No — flash dump only |
-| `secKey` (`gw_ai.key`) | `gw_info+0x470`, 16 B | Activation-issued | Post-activation cloud API: body encryption + request HMAC | Yes — app-tier device read |
-| `localKey` (`gw_ai.lckey`) | `gw_info+0x481`, 16 B | Activation-issued, rotates | The LAN plane (`:6668`): HMAC-SHA256 handshake, AES-128-GCM frame envelope | Yes — Tuya OpenAPI, and the app-tier read |
-| `psk_key` | — | Activation-issued | Consumed by later boots; a separate, confusingly-named field — not the TLS PSK | No |
+| `psk30_key` | `gw_bi`, 44 B | Factory-burned | The cloud TLS-PSK, passed verbatim to the `:443`/`:8883` connections | No, flash dump only |
+| `auth_key` | `gw_info+0x77`, 32 B | Factory-burned | Inner-cipher/sign key for exactly one call: the activation bootstrap | No, flash dump only |
+| `secKey` (`gw_ai.key`) | `gw_info+0x470`, 16 B | Activation-issued | Post-activation cloud API: body encryption + request HMAC | Yes, app-tier device read |
+| `localKey` (`gw_ai.lckey`) | `gw_info+0x481`, 16 B | Activation-issued, rotates | The LAN plane (`:6668`): HMAC-SHA256 handshake, AES-128-GCM frame envelope | Yes, Tuya OpenAPI, and the app-tier read |
+| `psk_key` | n/a | Activation-issued | Consumed by later boots; a separate, confusingly-named field, not the TLS PSK | No |
 
 Two rules that matter before trusting any key value:
 
 - **The activation-issued set rotates.** `localKey` (and the `devId` it's
   issued against) is re-minted per activation. Any value in a flash dump is a
-  snapshot, not a live credential — read the device's current keys before
+  snapshot, not a live credential. Read the device's current keys before
   using them.
 - **These are device credentials, not account credentials.** They identify one
   device to Tuya's cloud and give LAN control of that one device. They are not
@@ -68,8 +68,8 @@ signer offline instead of on a phone.
 
 The one non-obvious piece is the signer. Tuya's app signs every cloud request
 with native code (`libthing_security.so`). Rather than reimplement it, the
-vendor's own library is executed offline in an emulator — same bytes in, same
-signature out — so no phone is in the loop. Everything else is ordinary
+vendor's own library is executed offline in an emulator: same bytes in, same
+signature out, so no phone is in the loop. Everything else is ordinary
 owner-authenticated API use.
 
 ```mermaid
@@ -92,21 +92,21 @@ sequenceDiagram
 
 Confirmed live end to end: one login, a body-less home-list read returning the
 account's `gid`, then a device-list read returning each device's
-`localKey`/`secKey`. It recovers the activation-issued keys only — the
+`localKey`/`secKey`. It recovers the activation-issued keys only. The
 factory-burned `psk30_key`/`auth_key` never leave the flash, so a case-open
 dump is still the only route to those.
 
 ## The reflash chain
 
-With `localKey` in hand — from either route — the reflash rides Tuya's own LAN
+With `localKey` in hand, from either route, the reflash rides Tuya's own LAN
 OTA path. The device is told to fetch an OTA image over its local `:6668`
 session; the image installs OpenBeken in the app partition. After it boots,
 the rest is HTTP, no soldering (see [PROVISIONING.md](PROVISIONING.md)).
 
 ```mermaid
 flowchart TB
-    A["Route A — open case<br/>UART dump → kv_decode"]
-    B["Route B — phone-free<br/>cloud key grabber"]
+    A["Route A: open case<br/>UART dump → kv_decode"]
+    B["Route B: phone-free<br/>cloud key grabber"]
     A --> LK["localKey"]
     B --> LK
     LK --> SESS["Open LAN session :6668<br/>HMAC handshake + AES-128-GCM"]

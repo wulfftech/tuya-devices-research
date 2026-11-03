@@ -1,13 +1,13 @@
 # Full 2 MiB BK7238 dump that survives the chip dropping out mid-read.
 #
-# Adapted from tuya-th01/tools/bk_resume_read.py. Same idea: read 4K at a time, CRC-check every
-# block against the chip, and on any failure just re-link and carry on from that same block.
-# Progress survives a restart via <out>.part + <out>.next, so a drop costs one block, not the run.
+# Read 4K at a time, CRC-check every block against the chip, and on any failure just re-link and
+# carry on from that same block. Progress survives a restart via <out>.part + <out>.next, so a
+# drop costs one block, not the run.
 #
-# Two differences from the TH01 version, both because of this rig:
-#   - no CEN pulsing. TH01 drove CEN from an esp32 devkit's IO0 via DTR/RTS; this board has no CEN
-#     pad at all, so a re-link means the human cycles the 3.3 V rail. Hence the long link_timeout
-#     and the periodic prompts - it waits for you rather than pulsing.
+# Two things are specific to this rig:
+#   - no CEN pulsing. This board has no CEN pad at all, so a re-link means the human cycles the
+#     3.3 V rail. Hence the long link_timeout and the periodic prompts: it waits for you rather
+#     than pulsing.
 #   - DTR/RTS released, since stock ltchiptool's open (which asserts them) is what broke the link.
 #
 # usage: python tools/bk_resume_read.py COM6 dump\stock-full-2MiB.bin

@@ -27,7 +27,7 @@ the Series 4, `CB2S` is the Series 2 or 3.
 
 Series 2 and Series 3 are one product separated by a firmware revision. They
 share a productKey, a module and a DP set, and units of both report firmware
-`1.1.17` — cloudcutter's profile for this productKey is the older `1.1.8`.
+`1.1.17`; cloudcutter's profile for this productKey is the older `1.1.8`.
 
 The firmware analysis behind [SERIES-3.md](SERIES-3.md) was done on a **Series 2**
 image at `1.1.17`, published in cloudcutter issue #691. The Series 3 unit here
@@ -46,34 +46,36 @@ BL0942 metering all come up afterwards and survive a real power cycle.
 
 **The Series 3 does not.** Its firmware has no LAN OTA receiver, and the key
 that would sign the completion check is factory-burned. The serial route still
-works — it is the same case-open UART flash as any BK7231N — but there is no
+works, as the same case-open UART flash as any BK7231N, but there is no
 over-the-air path. One question is still open and has no result.
 
 ## What's here
 
 Start with the page for your unit:
 
-- [SERIES-4.md](SERIES-4.md) — the reflashable one: both routes, what is proven,
+- [SERIES-4.md](SERIES-4.md): the reflashable one: both routes, what is proven,
   what is not, and ESPHome as a second target.
-- [SERIES-3.md](SERIES-3.md) — the one that does not reflash, and why not.
+- [SERIES-3.md](SERIES-3.md): the one that does not reflash, and why not.
 
 Then the detail:
 
-- [ARCHITECTURE.md](ARCHITECTURE.md) — the device's key material, what each key
+- [ARCHITECTURE.md](ARCHITECTURE.md): the device's key material, what each key
   gates, and the two ways an owner recovers their own keys to reflash.
-- [HARDWARE.md](HARDWARE.md) — module pinout, flash partition map, and the
+- [HARDWARE.md](HARDWARE.md): module pinout, flash partition map, and the
   Series 4's confirmed pin roles.
-- [FLASHING.md](FLASHING.md) — dumping stock firmware and flashing over serial.
-  **Read the safety section before connecting anything** — this board's power
+- [FLASHING.md](FLASHING.md): dumping stock firmware and flashing over serial.
+  **Read the safety section before connecting anything**. This board's power
   stage is not isolated from mains.
-- [PROVISIONING.md](PROVISIONING.md) — getting from "OpenBeken boots" to "relay,
+- [PROVISIONING.md](PROVISIONING.md): getting from "OpenBeken boots" to "relay,
   button, LED and metering all configured and verified."
-- [REFERENCES.md](REFERENCES.md) — external sources, and what each settled.
-- `tools/` — the scripts referenced from the docs above.
-- `images/` — board and module photos referenced from the docs above.
-- [`dump/`](dump/README.md) — full flash reads: stock, post-OpenBeken, and the
+- [REFERENCES.md](REFERENCES.md): external sources, and what each settled.
+- [UPSTREAM.md](UPSTREAM.md): what this project has sent back to OpenBeken and
+  ESPHome, and what is still under review.
+- `tools/`: the scripts referenced from the docs above.
+- `images/`: board and module photos referenced from the docs above.
+- [`dump/`](dump/README.md): full flash reads: stock, post-OpenBeken, and the
   app partition pre-extracted for a disassembler.
-- [`served-images/`](served-images/README.md) — the OTA images pushed to real
+- [`served-images/`](served-images/README.md): the OTA images pushed to real
   hardware.
 
 ![The board with the T1-2S-NL module removed: both relays, the BL0942 metering section, and the non-isolated power stage](images/board-overall.jpg)
@@ -88,4 +90,4 @@ module.
 
 ## License
 
-[CC BY-NC 4.0](LICENSE) — attribution required, no commercial use.
+[CC BY-NC 4.0](LICENSE): attribution required, no commercial use.

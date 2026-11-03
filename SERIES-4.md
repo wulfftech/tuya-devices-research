@@ -1,4 +1,4 @@
-# Series 4 — status
+# Series 4: status
 
 The reflashable one. Arlec PC191HA Series 4, module **T1-2S-NL** (Beken
 **BK7238**), stock TuyaOS V3 firmware `1.0.2`.
@@ -6,7 +6,7 @@ The reflashable one. Arlec PC191HA Series 4, module **T1-2S-NL** (Beken
 **Status: solved, and reproduced on separate units.** These plugs can be
 reflashed to owner firmware over the air, with no case opened and no UART,
 using the owner's own Tuya cloud credentials. The same chain also carries
-ESPHome. This is not a vulnerability — the bootloader has no signature check
+ESPHome. This is not a vulnerability: the bootloader has no signature check
 to bypass, and the keys are the account holder's own.
 
 ## Hardware
@@ -25,20 +25,20 @@ Full detail: [HARDWARE.md](HARDWARE.md).
 
 ```mermaid
 flowchart TB
-    A["Route A — open the case<br/>UART dump → kv_decode"] --> LK["localKey"]
-    B["Route B — read your own keys<br/>from the app / cloud record"] --> LK
+    A["Route A: open the case<br/>UART dump → kv_decode"] --> LK["localKey"]
+    B["Route B: read your own keys<br/>from the app / cloud record"] --> LK
     LK --> SESS["LAN session :6668<br/>HMAC handshake + AES-128-GCM"]
     SESS --> OTA["Tuya's own LAN OTA path<br/>cmd 0x1A / 0x1B / 0x1C"]
     OTA --> OBK["Device applies the image<br/>→ OpenBeken or ESPHome boots"]
     OBK --> PROV["Provision over HTTP<br/>relay / button / LED / metering"]
 ```
 
-**Route A — serial.** Open the case, dump the stock firmware, flash over UART.
+**Route A: serial.** Open the case, dump the stock firmware, flash over UART.
 Fully proven; it is how every dump in [`dump/`](dump/README.md) was taken, and
 it is the only route that needs no cloud credential. Procedure and the mains
 safety rules: [FLASHING.md](FLASHING.md).
 
-**Route B — LAN OTA, no case open.** The device is told to fetch an image over
+**Route B: LAN OTA, no case open.** The device is told to fetch an image over
 its own local `:6668` session, and installs it into the app partition. This is
 Tuya's own update path, driven with the owner's own keys. The key model and
 why it works: [ARCHITECTURE.md](ARCHITECTURE.md).
@@ -53,27 +53,27 @@ why it works: [ARCHITECTURE.md](ARCHITECTURE.md).
 | The chunk transfer runs to completion | Live; full transfers of both a no-op and a real OpenBeken container |
 | The completion check is satisfiable by computing it | Live, device-confirmed: `fileHmac = HMAC-SHA256(secKey, uppercase-hex(SHA256(served file)))` |
 | The result boots and is usable | Live: relay, relay indicator, and BL0942 metering all come up and survive a real power cycle |
-| It reproduces | **Three separate units** reflashed with no case opened — two to OpenBeken, one from stock to ESPHome with the whole transfer captured on the wire |
+| It reproduces | **Three separate units** reflashed with no case opened: two to OpenBeken, one from stock to ESPHome with the whole transfer captured on the wire |
 
 The `secKey` that signs the completion check is the one input the Tuya OpenAPI
-does not serve — it has to come from the app's own device record or the
+does not serve. It has to come from the app's own device record or the
 activation reply. That is the biggest usability cliff in the chain, and it is
 why the published tooling takes it as an argument rather than fetching it.
 
 ## ESPHome as a second target
 
 The same container format carries ESPHome, built through LibreTiny's `bk72xx`
-component with `board: t1-2s`. It needs **ESPHome ≥ 2026.5.0** — that is the
+component with `board: t1-2s`. It needs **ESPHome ≥ 2026.5.0**, the
 first release with the BK7238 family and the `t1-2s` board at all.
 
 Two build-output traps worth knowing before you try it:
 
-- `firmware.bin` is **not** the app — it is a UF2 package despite the name.
+- `firmware.bin` is **not** the app: it is a UF2 package despite the name.
 - `image_bk7238_app.ota.ug.bin` is LibreTiny's own OTA container. It has the
   same diff2ya header magic but `bin_type` `PCZL`, which this device's applier
   does not accept. The tag has to be `RCZL`.
 
-The file you want is `raw_firmware.bin` — the bare app straight off the linker.
+The file you want is `raw_firmware.bin`, the bare app straight off the linker.
 Wrap it in the same `RCZL` container and it goes over the same LAN path.
 
 Unlike OpenBeken, ESPHome bakes the pin map into the image, so there is no
@@ -87,13 +87,13 @@ Neither is remotely recoverable. Both need UART.
 
 | Mode | What it looks like | Cause |
 |---|---|---|
-| **Bricked** | No ARP, no ICMP — not on the network at all | A **truncated transfer**. Closing the pipe mid-transfer is enough. |
+| **Bricked** | No ARP, no ICMP, not on the network at all | A **truncated transfer**. Closing the pipe mid-transfer is enough. |
 | **Wedged** | Ping and MQTT keepalives fine; DP engine, button and LAN plane dead; `:6668` answers RST | A **completed** apply that leaves the application's post-boot transition unfinished |
 
 A completed transfer is **not** a successful flash. Any wrapper around this
 chain has to verify by probing a management surface afterwards, and has to
 accept either the stock surface set (TCP `:6668` + UDP `7000`) or OpenBeken's
-HTTP `:80` serving `/api/info` — checking the stock ports alone scores every
+HTTP `:80` serving `/api/info`; checking the stock ports alone scores every
 successful OpenBeken flash as wedged.
 
 ## What is not proven
@@ -110,10 +110,10 @@ successful OpenBeken flash as wedged.
 
 ## Where to go next
 
-- [ARCHITECTURE.md](ARCHITECTURE.md) — the key model, and why the keys are the
+- [ARCHITECTURE.md](ARCHITECTURE.md): the key model, and why the keys are the
   owner's to use.
-- [FLASHING.md](FLASHING.md) — the serial route, and the mains safety rules.
-- [PROVISIONING.md](PROVISIONING.md) — relay, button, LED and metering after
+- [FLASHING.md](FLASHING.md): the serial route, and the mains safety rules.
+- [PROVISIONING.md](PROVISIONING.md): relay, button, LED and metering after
   the flash.
-- [`served-images/`](served-images/README.md) — the containers actually pushed
+- [`served-images/`](served-images/README.md): the containers actually pushed
   to hardware.
