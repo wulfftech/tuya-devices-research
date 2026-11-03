@@ -1,13 +1,16 @@
 # Upstream contributions
 
-Work from this project that has gone back to the projects it depends on. All of
+Work from this project that is prepared for the projects it depends on. All of
 it is generic: no unit identity, no key material, no household detail.
+
+Nothing here has been submitted yet. Each item says where it actually stands.
 
 ## OpenBeken
 
 ### 1. AP fallback when Wi-Fi never connects
 
-Branch `wifi-never-connected-ap-fallback`.
+Branch `wifi-never-connected-ap-fallback`. **Under code review, not yet
+submitted.**
 
 OpenBeken retries a configured SSID forever when the join fails. That is not a
 boot failure, so the safe-mode boot counter never trips, and the device becomes
@@ -36,6 +39,8 @@ branch guards that call with `!g_bOpenAccessPointMode`. Without the guard the
 watchdog fires and is then silently undone.
 
 ### 2. `ENABLE_DRIVER_BL0942` is undefined under the default variant
+
+**Prepared, not yet submitted.**
 
 `src/obk_config.h` undefines `ENABLE_DRIVER_BL0942` whenever `OBK_VARIANT` is
 `TUYAMCU` (2). A power-metering plug built with the default variant therefore
@@ -71,6 +76,8 @@ it. Documenting which file is which would save the next person the same detour.
 
 ### 3. Hardware confirmation for the 2.1.8 TuyaMCU sensor profile
 
+**Prepared, not yet submitted.**
+
 The device entry `tuya-generic-zy-th02pro-temperature-and-humidity-with-display-v2.1.8`
 has existed since December 2024 with no linked issue and no recorded hardware
 result. Two units confirm it works.
@@ -96,6 +103,8 @@ broken exploit and neither is:
 
 ### 4. The sticky AP suffix never reappears on some profiles
 
+**Prepared, not yet submitted.** Needs a repro on current `main` first.
+
 `wifi_connect` stores the last five characters of the first matched AP name and
 pins the second scan to that suffix. For some profiles the post-exploit AP name
 comes from the profile's `address_ssid`, a separate baked-in value, so the suffix
@@ -110,5 +119,6 @@ worth a PR.
 
 ## Status
 
-Submitted and under review. Nothing here is merged, and this page will say so
-until it is.
+Nothing here has been submitted yet. The OpenBeken fallback patch is in review
+before it goes out; the rest are written up and waiting. This page will say when
+each one is actually open, and again when it is merged.
