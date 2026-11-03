@@ -67,6 +67,47 @@ The `PCZL` tag is the trap. It is a valid container with the right magic, so it
 looks like the OTA artifact, and a device whose applier expects `RCZL` rejects
 it. Documenting which file is which would save the next person the same detour.
 
+## Cloudcutter
+
+### 3. Hardware confirmation for the 2.1.8 TuyaMCU sensor profile
+
+The device entry `tuya-generic-zy-th02pro-temperature-and-humidity-with-display-v2.1.8`
+has existed since December 2024 with no linked issue and no recorded hardware
+result. Two units confirm it works.
+
+The entry is also misnamed. It says "with Display"; the board this was tested on
+has none, which is why nobody searching for this sensor finds the profile.
+
+The useful part is the firmware version. Cloudcutter issue #454 closed a TH01 on
+firmware `2.1.0` as patched, and the Known-Patched list carries `2.1.0`, `2.1.5`,
+`2.1.12`, `2.1.15` and `2.1.17` for BK7231N. `2.1.8` is not on it, and both units
+exploited cleanly on the first try.
+
+Two failure modes are worth recording alongside it, because both look like a
+broken exploit and neither is:
+
+- **The MCU cuts the module's power mid-run.** The device's button has to be
+  pressed every 4 to 5 seconds for the whole run. Losing that cadence for a few
+  seconds drops the radio mid-handshake and the device falls back to broadcasting
+  its own AP. Cloudcutter does not notice and hangs.
+- **The firmware transfer stalls on weak signal**, even while the device is still
+  link-layer associated. One unit stalled for over three minutes at -72 dBm and
+  finished in under 15 seconds at -60 dBm.
+
+### 4. The sticky AP suffix never reappears on some profiles
+
+`wifi_connect` stores the last five characters of the first matched AP name and
+pins the second scan to that suffix. For some profiles the post-exploit AP name
+comes from the profile's `address_ssid`, a separate baked-in value, so the suffix
+never reappears and the scan loops forever.
+
+The pin is deliberate: it stops the second scan latching onto a different
+device's AP, and issue #606 tells users to set it by hand for that reason. So the
+fix is a timeout and a fallback to the generic pattern, not removing the pin.
+
+Not yet reproduced against current `main`, so this one needs a repro before it is
+worth a PR.
+
 ## Status
 
 Submitted and under review. Nothing here is merged, and this page will say so
