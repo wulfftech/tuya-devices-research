@@ -6,10 +6,6 @@ replacing the stock firmware with open alternatives.
 Two product families so far. The Arlec PC191HA plugs are the main thread; the TH01
 sensor is a different class of device with a different obstacle.
 
-The bootloaders involved have no signature check to break, and the keys are the
-owner's own, issued to their own account for their own device. Nothing here is a
-disclosure.
-
 ## Which device do you have?
 
 ### Smart plugs

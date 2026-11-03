@@ -6,8 +6,7 @@ The reflashable one. Arlec PC191HA Series 4, module **T1-2S-NL** (Beken
 **Status: solved, and reproduced on separate units.** These plugs can be
 reflashed to owner firmware over the air, with no case opened and no UART,
 using the owner's own Tuya cloud credentials. The same chain also carries
-ESPHome. This is not a vulnerability: the bootloader has no signature check
-to bypass, and the keys are the account holder's own.
+ESPHome.
 
 ## Hardware
 

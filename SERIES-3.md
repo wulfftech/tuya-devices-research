@@ -92,26 +92,20 @@ One question, and it needs hardware that is not currently on the network:
 **Can the `auth_key`-sealed MQTT session be impersonated?** Certificate
 verification is dead code, so if MQTT messages carry no app-layer HMAC, a
 man-in-the-middle could inject a firmware descriptor. That needs a live
-capture of the session, which needs the unit back on the network. It is the
-only avenue not closed by static analysis, and it is not a small one, but it
-is also not a result, and nothing here claims it works.
+capture of the session, which needs the unit back on the network. It's the
+only avenue static analysis hasn't closed, and it's untested.
 
 ## Evidence level
 
 Everything above is static analysis and emulation (E1–E2), run on a Series 2
 image at the same firmware version. No claim on this page is wire-observed or
-end-to-end, and the gate has never been observed acting. That is the honest
-state of it, and it is why the status is "closed" rather than "proven
-impossible".
+end-to-end, and the gate has never been observed acting, which is why the
+status is "closed" rather than "proven impossible".
 
-## What this page deliberately does not contain
+## Not published
 
-The `1.1.17` work produced a valid package format for its bootloader and the
-constant that bootloader decrypts with. Neither is published here. A packer
-plus a known constant is a working exploit kit for a device class that is still
-in the field, and this project's position is that an owner reflash on owned
-hardware is not a disclosure, so there is nothing to hand out. The status is
-the useful part; the tooling is not.
+The `1.1.17` package format and the constant its bootloader decrypts with.
+Together they'd reflash any Series 3 in the field.
 
 ## Where to go next
 

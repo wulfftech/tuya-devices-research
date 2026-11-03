@@ -159,7 +159,7 @@ Generate the API key with:
 python -c "import base64, secrets; print(base64.b64encode(secrets.token_bytes(32)).decode())"
 ```
 
-## No captive portal, on purpose
+## No captive portal
 
 The config above omits `captive_portal`. Real Wi-Fi is already baked into the
 build, so the fallback AP's onboarding page is never needed, and dropping it
@@ -176,7 +176,7 @@ app.
 |---|---|
 | `firmware.bin` | A UF2 package, despite the name |
 | `image_bk7238_app.ota.ug.bin` | LibreTiny's own OTA container: correct diff2ya header, but `bin_type` `PCZL` |
-| `raw_firmware.bin` | The bare app off the linker. This is the one. |
+| `raw_firmware.bin` | The bare app off the linker. Flash this one |
 
 `raw_firmware.bin` is already the bare logical app at base `0x10000`, with no
 bootloader prefix and no CRC interleave to undo. Wrap it in the same `RCZL`
