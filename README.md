@@ -71,6 +71,8 @@ Then the detail:
 - [REFERENCES.md](REFERENCES.md): external sources, and what each settled.
 - [UPSTREAM.md](UPSTREAM.md): what this project has sent back to OpenBeken and
   ESPHome, and what is still under review.
+- [ESPHOME.md](ESPHOME.md): the ESPHome config for this board, and which build
+  output to flash.
 - `tools/`: the scripts referenced from the docs above.
 - `images/`: board and module photos referenced from the docs above.
 - [`dump/`](dump/README.md): full flash reads: stock, post-OpenBeken, and the

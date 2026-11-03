@@ -15,18 +15,25 @@ unreachable with no way back in short of a factory reset. The failure is easy to
 hit: a stored credential that is wrong, or an access point that is present but
 refusing the join.
 
-Three changes:
+Two changes:
 
-- A 900 s never-connected watchdog. If the device has not completed a join
-  within that window, it opens its fallback access point.
-- A 5 s button hold forces the access point immediately, for when you would
-  rather not wait out the watchdog.
-- The status LED fast-blinks while the fallback access point is up, then
-  restores the channel's real value when AP mode ends.
+- A 900 s never-connected watchdog. If the boot has not joined a network by
+  then, it opens the fallback AP once. The check is deliberately narrow: it
+  only fires before the first successful association, so a device that joins
+  and later drops keeps retrying exactly as it always has.
+- The status LED blinks while the fallback AP is up. This covers the plain
+  `LED` role, which has no AP-mode awareness of its own because it is only
+  driven by `CHANNEL_Set` on a channel change.
 
-The LED change is the fiddly one. `CHANNEL_Set` is event-driven and nothing
+The LED change is the fiddly part. `CHANNEL_Set` is event-driven and nothing
 re-asserts a channel on its own, so the restore on exit is not optional: without
 it the LED stays wherever the last blink toggle left it.
+
+One related change is easy to miss. A second countdown in `Main_OnEverySecond`
+calls `Main_ConnectToWiFiNow()`, which clears AP mode unconditionally, so it
+would pull the radio back into STA within seconds of the fallback opening. The
+branch guards that call with `!g_bOpenAccessPointMode`. Without the guard the
+watchdog fires and is then silently undone.
 
 ### 2. `ENABLE_DRIVER_BL0942` is undefined under the default variant
 
@@ -43,7 +50,9 @@ board needs.
 ## ESPHome / LibreTiny
 
 No code change is needed. BK7238 and the `t1-2s` board are supported from
-ESPHome 2026.5.0 onward, and the BL0942 component works as documented.
+ESPHome 2026.5.0 onward, and the BL0942 component works as documented. The
+device config is published here as [ESPHOME.md](ESPHOME.md) rather than sent
+upstream, because it is one board's pin map, not a component change.
 
 What is worth fixing is the build output. A BK7238 build produces three files
 that look like candidates, and only one of them is the app:

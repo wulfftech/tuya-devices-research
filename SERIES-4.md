@@ -64,17 +64,9 @@ why the published tooling takes it as an argument rather than fetching it.
 
 The same container format carries ESPHome, built through LibreTiny's `bk72xx`
 component with `board: t1-2s`. It needs **ESPHome ≥ 2026.5.0**, the
-first release with the BK7238 family and the `t1-2s` board at all.
-
-Two build-output traps worth knowing before you try it:
-
-- `firmware.bin` is **not** the app: it is a UF2 package despite the name.
-- `image_bk7238_app.ota.ug.bin` is LibreTiny's own OTA container. It has the
-  same diff2ya header magic but `bin_type` `PCZL`, which this device's applier
-  does not accept. The tag has to be `RCZL`.
-
-The file you want is `raw_firmware.bin`, the bare app straight off the linker.
-Wrap it in the same `RCZL` container and it goes over the same LAN path.
+first release with the BK7238 family and the `t1-2s` board at all. The full
+config, the secrets it needs, and the build-output traps are in
+[ESPHOME.md](ESPHOME.md).
 
 Unlike OpenBeken, ESPHome bakes the pin map into the image, so there is no
 post-flash provisioning step. `name_add_mac_suffix: true` reads the chip's real
