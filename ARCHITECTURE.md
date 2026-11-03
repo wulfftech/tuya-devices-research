@@ -4,6 +4,11 @@ What the device's key material is, how each key gates a different plane, and
 the two ways an owner recovers their own keys to reflash. This is the "why it
 works" behind [FLASHING.md](FLASHING.md) and [PROVISIONING.md](PROVISIONING.md).
 
+**This page describes the Series 4 (BK7238).** The key model is the same
+generation, but the Series 3's cloud record has no `secKey` at all and its
+firmware has no LAN OTA receiver, so the chain below does not close on that
+product — see [SERIES-3.md](SERIES-3.md).
+
 Framing, up front: this is an owner operating on their own hardware with their
 own cloud-issued keys. There's no signature check being broken — the BK7238
 bootloader has none. The local-key disclosure the reflash leans on is already

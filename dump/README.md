@@ -3,6 +3,10 @@
 Full 2 MiB flash reads and their derived forms. `SHA256SUMS.txt` covers every
 binary in this directory and in `../served-images/`.
 
+**All of these are Series 4 (BK7238) units.** No Series 3 dump is published —
+see [SERIES-3.md](../SERIES-3.md) for why that product's status is documented
+without its tooling.
+
 | File | What it is |
 |---|---|
 | `stock-full-2MiB.bin` | Raw flash read of the unit as it shipped, stock Tuya firmware. Taken with `../tools/bk_resume_read.py`; see [FLASHING.md](../FLASHING.md). CRC16-interleaved, as the chip stores it — see [HARDWARE.md](../HARDWARE.md) for the de-interleaving math. |

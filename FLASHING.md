@@ -1,8 +1,14 @@
-# Flashing — serial, BK7238
+# Flashing — serial, BK7238 (Series 4)
 
 The case-open route: dump the stock firmware, then flash OpenBeken. Needs
 `ltchiptool` and a USB-TTL adapter. Read the safety section before you
 connect anything — this board's power stage is not isolated from mains.
+
+**This page is the Series 4 (T1-2S-NL / BK7238).** The mains hazard and the
+bench-supply discipline apply to any non-isolated plug, but the pads, the
+partition map and the image family below are this board's. The Series 3
+(CB2S / BK7231N) is a different module with a different bootloader — see
+[SERIES-3.md](SERIES-3.md).
 
 ## The mains hazard, and how to avoid it entirely
 

@@ -1,9 +1,18 @@
-# Provisioning
+# Provisioning — Series 4 (BK7238)
 
 Getting from "OpenBeken boots" to "relay, button, LED and metering all
 configured and verified" — all over HTTP, no more soldering. `tools/provision_pc191ha.py`
 does this idempotently; this doc explains what it's doing and why, so you can
 do it by hand or adapt it to a related board.
+
+**Series 4 only.** The pin map below is this board's, and this family does not
+agree on pin assignments across revisions — the Series 3 uses a permutation of
+the same pin set. See [SERIES-3.md](SERIES-3.md) before assuming anything here
+applies to a different PC191HA.
+
+**ESPHome needs none of this.** It bakes the pin map into the compiled image,
+so there is no post-flash provisioning step for that target — see
+[SERIES-4.md](SERIES-4.md#esphome-as-a-second-target).
 
 ## Target configuration (Series 4, confirmed live)
 

@@ -1,8 +1,12 @@
-# Hardware
+# Hardware — Series 4 (BK7238)
 
 Module identification, flash layout, and this board's confirmed pin roles.
 Verified against [LibreTiny's T1-2S board page](https://docs.libretiny.eu/boards/t1-2s/)
 and live on real units — see [REFERENCES.md](REFERENCES.md) for the sources.
+
+**This page is the Series 4 only.** The Series 3 is a different module
+(CB2S / BK7231N) with a different flash layout and a *permuted* pin map — see
+[SERIES-3.md](SERIES-3.md). Nothing here transfers to it.
 
 ## Module
 

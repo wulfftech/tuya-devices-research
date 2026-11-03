@@ -3,6 +3,10 @@
 External sources this project leans on, and what each one actually settled.
 Kept separate from our own measurements so the distinction stays clear.
 
+Most of these are about the **T1-2S-NL / BK7238** module — the Series 4. The
+Series 3 is a different module (CB2S / BK7231N) and only §4's CVE and the
+cloudcutter corpus touch it; see [SERIES-3.md](SERIES-3.md).
+
 ## 1. LibreTiny — T1-2S board page
 
 <https://docs.libretiny.eu/boards/t1-2s/>
