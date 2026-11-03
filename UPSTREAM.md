@@ -9,8 +9,8 @@ Nothing here has been submitted yet. Each item says where it actually stands.
 
 ### 1. AP fallback when Wi-Fi never connects
 
-Branch `wifi-never-connected-ap-fallback`. **Under code review, not yet
-submitted.**
+Two branches, two PRs: `wifi-never-connected-ap-fallback` and
+`ap-mode-plain-led-blink`. **Reviewed and ready, not yet submitted.**
 
 OpenBeken retries a configured SSID forever when the join fails. That is not a
 boot failure, so the safe-mode boot counter never trips, and the device becomes
@@ -18,19 +18,22 @@ unreachable with no way back in short of a factory reset. The failure is easy to
 hit: a stored credential that is wrong, or an access point that is present but
 refusing the join.
 
-Two changes:
+Two changes, one per PR:
 
 - A 900 s never-connected watchdog. If the boot has not joined a network by
-  then, it opens the fallback AP once. The check is deliberately narrow: it
-  only fires before the first successful association, so a device that joins
-  and later drops keeps retrying exactly as it always has.
-- The status LED blinks while the fallback AP is up. This covers the plain
-  `LED` role, which has no AP-mode awareness of its own because it is only
-  driven by `CHANNEL_Set` on a channel change.
+  then, it opens the fallback AP once. The check is deliberately narrow: a flag
+  set on the first successful association and never cleared keeps it out of the
+  way afterwards, so a device that joins and later drops keeps retrying exactly
+  as it always has. The first draft keyed on the live connection state instead,
+  which drops on every disconnect; review caught that before submission.
+- The status LED blinks while the open AP is up. This covers the plain `LED`
+  role, which has no AP-mode awareness of its own because it is only driven by
+  `CHANNEL_Set` on a channel change.
 
-The LED change is the fiddly part. `CHANNEL_Set` is event-driven and nothing
-re-asserts a channel on its own, so the restore on exit is not optional: without
-it the LED stays wherever the last blink toggle left it.
+The LED change is the fiddly part. Nothing re-asserts a channel on its own, so
+the restore on exit is not optional: without it the LED stays wherever the last
+blink toggle left it. And it cannot go through `CHANNEL_Set`, which ignores a
+value that has not changed. The restore drives the pin directly.
 
 One related change is easy to miss. A second countdown in `Main_OnEverySecond`
 calls `Main_ConnectToWiFiNow()`, which clears AP mode unconditionally, so it
@@ -119,6 +122,6 @@ worth a PR.
 
 ## Status
 
-Nothing here has been submitted yet. The OpenBeken fallback patch is in review
-before it goes out; the rest are written up and waiting. This page will say when
+Nothing here has been submitted yet. The two OpenBeken PRs are reviewed and
+ready to open; the rest are written up and waiting. This page will say when
 each one is actually open, and again when it is merged.
