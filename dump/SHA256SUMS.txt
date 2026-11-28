@@ -5,3 +5,4 @@ bd13ab0bd3fbc4ec3d4726aca19a13d76cbb46131c61fdec288cae488f04d7a5 *dump/unit7-pos
 643f203af16319e0f0707f598c10dee12c8c2a047b46854d767832264027d556 *dump/stock-full-2MiB.arm.elf
 ef39fe9c4a0128d25c72c948261e4e0a0ce57710ea5604ee0fd2d450c7188be0 *served-images/RCZL-unit3-noop-fixed.bin
 b7f9bce371ba3dcc8da1bf6f0cd2c4d311f183fb6c754f3ef0537708bedad561 *served-images/RCZL.bin
+57ebbf8e684a9a553396423c0ab4e0fe9c29e1fed268b17bb321f28b84188f75 *served-images/RCZL-r34d-openbeken.bin

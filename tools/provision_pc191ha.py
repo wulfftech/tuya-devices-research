@@ -351,8 +351,7 @@ def parse_args():
     ap.add_argument("--port", type=int, default=80)
     ap.add_argument("--expect-mac", default=None, metavar="MAC",
                     help="refuse unless /api/info's mac matches exactly -- the MAC "
-                         "the private flashing tool's dry-run plan printed as the "
-                         "patched identity (that tool isn't published in this repo). "
+                         "ota_flash.py's dry-run plan printed as the patched identity. "
                          "Omit while the unit is still in its own standalone config AP.")
     ap.add_argument("--yes", action="store_true",
                     help="confirm the writes shown in the plan (not needed for the zero-write no-op)")
